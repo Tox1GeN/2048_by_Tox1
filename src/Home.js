@@ -40,16 +40,16 @@ const arrCellsAct = [
 
 const myFuncPressKey = (event) => {
     switch(event.key) {
-        case "37":      
+        case 'ArrowLeft':      
             document.getElementById("left").click();
             break;
-        case "38":      
+        case 'ArrowUp':      
             document.getElementById("up").click();
             break;
-        case "39":      
+        case 'ArrowRight':      
             document.getElementById("right").click();
             break;
-        case "40":      
+        case 'ArrowDown':      
             document.getElementById("down").click();
             break;
     }
@@ -83,7 +83,12 @@ class Home extends Component {
     }
 
     componentDidMount() {
-        window.addEventListener("keypress", myFuncPressKey);
+        window.addEventListener("keydown", myFuncPressKey);
+        window.addEventListener("keydown", function(e) {
+            if(["Space","ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].indexOf(e.code) > -1) {
+                e.preventDefault();
+            }
+        }, false);
     }
 
     render() {
@@ -96,11 +101,10 @@ class Home extends Component {
                     <button className="arrows" id="right" onClick={this.handleClick}></button>
                     <button className="arrows" id="down" onClick={this.handleClick}></button>
                 </div>
-                <input type="text" onChange={this.handleChange}></input>
                 <div className="top-panel" id="top">
                     <div className="title-buttons">
                         <div className="title-box">
-                            <h1 className="title">{this.state.input}</h1>
+                            <h1 className="title">{this.state.value}</h1>
                         </div>
                         <div className="buttons">
                             <a href="#rule-text" className="btn"><i className='far fa-question-circle'></i></a>
