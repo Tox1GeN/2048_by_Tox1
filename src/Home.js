@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 
+
+let count = 0;
+
 const arrCellsBG = [
     {id: 1, className: "cell"},
     {id: 2, className: "cell"},
@@ -38,6 +41,29 @@ const arrCellsAct = [
     {id: '16act', className: "cell act"}
 ];
 
+/*
+gameTable is an array of objects(max number of them is 16, min - 0).
+Every obj contains info about one of the act cell on the table(position and value)
+
+X coordinate access: gameTable[i].position.x
+Y coordinate access: gameTable[i].position.y
+Value acces: gameTable[i].value
+
+
+let gameTable = [
+
+    {
+        'position': {
+            'x': 0,
+            'y': 0
+        },
+        'value': 2,
+        'color': 'white',
+    }
+
+]
+*/
+
 const myFuncPressKey = (event) => {
     switch(event.key) {
         case 'ArrowLeft':      
@@ -65,17 +91,37 @@ class Home extends Component {
     constructor(props){
         super(props);
         this.state = {
-            input: '',
-            value: 0
+            vis1: 'hidden',
+            vis2: 'hidden',
+            vis3: 'hidden',
+            vis4: 'hidden',
+            vis5: 'hidden',
+            vis6: 'hidden',
+            vis7: 'hidden',
+            vis8: 'hidden',
+            vis9: 'hidden',
+            vis10: 'hidden',
+            vis11: 'hidden',
+            vis12: 'hidden',
+            vis13: 'hidden',
+            vis14: 'hidden',
+            vis15: 'hidden',
+            vis16: 'hidden'
         }
     }
 
     handleClick = () => {
+        let variable = (Object.keys(this.state)).filter( item => {
+            return (/['vis']/).test(item);
+        })[(Math.floor(Math.random() * (16)) + 1)];
+        this.setState({[variable]: 'visible'});
+        /*
         this.setState((prevValue) => {
             return {
                 value: prevValue.value + 1
             };
         });        
+        */
     }
     
     handleChange = (e) => {
@@ -92,7 +138,8 @@ class Home extends Component {
     }
 
     render() {
-        console.log(this.state.value);
+        count++;
+        console.log('count is ', count);
         return (
             <div className="wrapper">
                 <div id="real-top">
@@ -104,7 +151,7 @@ class Home extends Component {
                 <div className="top-panel" id="top">
                     <div className="title-buttons">
                         <div className="title-box">
-                            <h1 className="title">{this.state.value}</h1>
+                            <h1 className="title">2048</h1>
                         </div>
                         <div className="buttons">
                             <a href="#rule-text" className="btn"><i className='far fa-question-circle'></i></a>
@@ -126,7 +173,9 @@ class Home extends Component {
                     <div className="table">
                         <Cells cells={arrCellsBG} />
                     </div>
-                    <CellsAct cells={arrCellsAct} />
+                    <CellsAct cells={arrCellsAct} styles={(Object.keys(this.state)).map(item => {
+                        return this.state[item];
+                    })}/>
                 </div>
                 <Rules />
                 <hr className="divider"/>
@@ -146,7 +195,7 @@ const Cells = (props) => {
 const CellsAct = (props) => {
     return props.cells.map(cell => {
         return (
-            <div key={cell.id} id={cell.id} className={cell.className} style={genXY(parseInt((cell.id).match(/[0-9]+/g)))}></div>
+            <div key={cell.id} id={cell.id} className={cell.className} style={genXY(parseInt((cell.id).match(/[0-9]+/g)), props.styles)}></div>
         )
     })    
 }
@@ -164,13 +213,171 @@ const createBgColor = (colorId) => {
     return {'backgroundColor': 'rgb(50, ' + colorId * 15 + ', 130)'};
 }
 
-const genXY = (id) => {
+const genXY = (id, arrVis) => {
     const frCenter = 94;
     const incr = 98;
     const frTop = 188;
-    return (id < 5) ? {'top': frTop, 'left': ('calc(50%' + ' - ' + frCenter + 'px - ' + incr + 'px + ' + ((id - 1) * incr) + 'px')}
-        : (id < 9) ? {'top': (frTop + incr), 'left': ('calc(50%' + ' - ' + frCenter + 'px - ' + incr + 'px + ' + ((id - 5) * incr) + 'px')}
-        : (id < 13) ? {'top': (frTop + 2 * incr), 'left': ('calc(50%' + ' - ' + frCenter + 'px - ' + incr + 'px + ' + ((id - 9) * incr) + 'px')}
-        : {'top': (frTop + 3 * incr), 'left': ('calc(50%' + ' - ' + frCenter + 'px - ' + incr + 'px + ' + ((id - 13) * incr) + 'px')};
+    return (id < 5) ? {'top': frTop, 'left': ('calc(50%' + ' - ' + frCenter + 'px - ' + incr + 'px + ' + ((id - 1) * incr) + 'px'), 'visibility': arrVis[id]}
+        : (id < 9) ? {'top': (frTop + incr), 'left': ('calc(50%' + ' - ' + frCenter + 'px - ' + incr + 'px + ' + ((id - 5) * incr) + 'px'), 'visibility': arrVis[id]}
+        : (id < 13) ? {'top': (frTop + 2 * incr), 'left': ('calc(50%' + ' - ' + frCenter + 'px - ' + incr + 'px + ' + ((id - 9) * incr) + 'px'), 'visibility': arrVis[id]}
+        : {'top': (frTop + 3 * incr), 'left': ('calc(50%' + ' - ' + frCenter + 'px - ' + incr + 'px + ' + ((id - 13) * incr) + 'px'), 'visibility': arrVis[id]};
 }
+
+let arr = [1,2,3,4,5,6,7,8,9];
+
+/*
+for (let x = 0; x < 100; x++){
+    console.log(Math.floor(Math.random() * (16)) + 1);
+}
+*/
+
+let arr1 = [
+    {
+        'position': {
+            'x': 0,
+            'y': 0
+        },
+        'value': 2,
+        'visibility': 'hidden',
+        'color': 'white'
+    },
+    {
+        'position': {
+            'x': 1,
+            'y': 1
+        },
+        'value': 4,
+        'visibility': 'hidden',
+        'color': 'yellow'
+    },
+    {
+        'position': {
+            'x': 0,
+            'y': 0
+        },
+        'value': 2,
+        'visibility': 'hidden',
+        'color': 'white'
+    },
+    {
+        'position': {
+            'x': 1,
+            'y': 1
+        },
+        'value': 4,
+        'visibility': 'hidden',
+        'color': 'yellow'
+    },
+    {
+        'position': {
+            'x': 0,
+            'y': 0
+        },
+        'value': 2,
+        'visibility': 'hidden',
+        'color': 'white'
+    },
+    {
+        'position': {
+            'x': 1,
+            'y': 1
+        },
+        'value': 4,
+        'visibility': 'hidden',
+        'color': 'yellow'
+    },
+    {
+        'position': {
+            'x': 0,
+            'y': 0
+        },
+        'value': 2,
+        'visibility': 'hidden',
+        'color': 'white'
+    },
+    {
+        'position': {
+            'x': 1,
+            'y': 1
+        },
+        'value': 4,
+        'visibility': 'hidden',
+        'color': 'yellow'
+    },
+    {
+        'position': {
+            'x': 0,
+            'y': 0
+        },
+        'value': 2,
+        'visibility': 'hidden',
+        'color': 'white'
+    },
+    {
+        'position': {
+            'x': 1,
+            'y': 1
+        },
+        'value': 4,
+        'visibility': 'hidden',
+        'color': 'yellow'
+    },
+    {
+        'position': {
+            'x': 0,
+            'y': 0
+        },
+        'value': 2,
+        'visibility': 'hidden',
+        'color': 'white'
+    },
+    {
+        'position': {
+            'x': 1,
+            'y': 1
+        },
+        'value': 4,
+        'visibility': 'hidden',
+        'color': 'yellow'
+    },
+    {
+        'position': {
+            'x': 0,
+            'y': 0
+        },
+        'value': 2,
+        'visibility': 'hidden',
+        'color': 'white'
+    },
+    {
+        'position': {
+            'x': 1,
+            'y': 1
+        },
+        'value': 4,
+        'visibility': 'hidden',
+        'color': 'yellow'
+    },
+    {
+        'position': {
+            'x': 0,
+            'y': 0
+        },
+        'value': 2,
+        'visibility': 'hidden',
+        'color': 'white'
+    },
+    {
+        'position': {
+            'x': 1,
+            'y': 1
+        },
+        'value': 4,
+        'visibility': 'hidden',
+        'color': 'yellow'
+    },
+];
+
+//console.log('arr1', arr1[2]['visibility'])
+
 export default Home;

@@ -26,13 +26,21 @@ a:active, a {
     top: 0;
     left: 0;
 }
+
+.arrows {
+    position: absolute;
+    top: 0;
+    left: 0;
+    visibility: hidden;
+    width: 0;
+    height: 0;
+}
 /*top-panel with title, info and actions in it*/
 .top-panel {
     width: 420px;
     height: 170px;
     display: flex;
-    flex-direction: column;
-    
+    flex-direction: column; 
 }
 
 .title-buttons {
@@ -187,11 +195,3 @@ i {
     visibility: hidden;
 }
 
-.arrows {
-    position: absolute;
-    top: 0;
-    left: 0;
-    visibility: visible;
-    width: 0;
-    height: 0;
-}
